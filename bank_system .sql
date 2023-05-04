@@ -323,5 +323,26 @@ AFTER INSERT ON customer
 FOR EACH ROW
 EXECUTE FUNCTION insert_login_row();
  --login to password when inserted role and this
+ 
+ --Trigger to check eligibility for loan
+CREATE OR REPLACE FUNCTION validate_loan_eligibility()
+RETURNS TRIGGER AS $$
+DECLARE
+    eligible BOOLEAN;
+BEGIN
+    -- Call the check_loan_eligibility function with the customer_id
+    eligible := check_loan_eligibility(NEW.account_no);
 
+    IF NOT eligible THEN
+        RAISE EXCEPTION 'Customer is not eligible for a loan.';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER loan_eligibility_trigger
+BEFORE INSERT ON loan
+FOR EACH ROW
+EXECUTE FUNCTION validate_loan_eligibility();
       
