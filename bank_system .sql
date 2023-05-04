@@ -243,28 +243,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
---delete employee
-CREATE FUNCTION delete_employee(branch_id INT, employee_id INT) RETURNS VOID AS $$
-DECLARE
-    employee_exists BOOLEAN;
-BEGIN
-    -- Check if the employee ID exists in the employee table
-    SELECT EXISTS (SELECT 1 FROM employee WHERE employee.branch_id = delete_employee.branch_id AND employee.employee_id = delete_employee.employee_id) INTO employee_exists;
-    
-    IF employee_exists THEN
-        -- Employee exists, proceed with deletion
-        DELETE FROM employee
-        WHERE employee.branch_id = delete_employee.branch_id AND employee.employee_id = delete_employee.employee_id;
-        
-       
-        
-    ELSE
-        -- Employee does not exist, raise an exception or return a message indicating the non-existence
-        RAISE EXCEPTION 'Employee ID % does not exist in branch ID %', delete_employee.employee_id, delete_employee.branch_id;
-    END IF;
-    
-END;
-$$ LANGUAGE plpgsql;
+
    
   --views
 
