@@ -211,9 +211,8 @@ begin
          RAISE NOTICE 'Account doesnot exist. Check input account number!';
        END IF;
    END;$$;
-   
-CREATE OR REPLACE FUNCTION check_loan_eligibility(customer_id INT)
-RETURNS BOOLEAN AS $$
+--function to check loan eligibility   
+CREATE OR REPLACE FUNCTION check_loan_eligibility(customer_id BIGINT) RETURNS BOOLEAN AS $$
 DECLARE
     total_loan_amount DECIMAL;
     total_loan_count INT;
@@ -221,16 +220,12 @@ DECLARE
 BEGIN
     -- Calculate the total loan amount and count for the given customer
     SELECT SUM(amount) INTO total_loan_amount
-    FROM Loan
-    WHERE loan_id IN (
-        SELECT loan_id
-        FROM Customer_Loan
-        WHERE cust_id = check_loan_eligibility.customer_id
-    );
+    FROM loan
+    WHERE account_no = (SELECT account_no FROM customer WHERE cust_id = check_loan_eligibility.customer_id);
 
     SELECT COUNT(*) INTO total_loan_count
-    FROM Customer_Loan
-    WHERE cust_id = check_loan_eligibility.customer_id;
+    FROM loan
+    WHERE account_no = (SELECT account_no FROM customer WHERE cust_id = check_loan_eligibility.customer_id);
 
     -- Check eligibility criteria
     IF total_loan_amount < 1000000 AND total_loan_count < 5 THEN
