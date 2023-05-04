@@ -21,7 +21,7 @@ CREATE TABLE employee(
     employee_id SERIAL PRIMARY KEY,
     employee_name VARCHAR(100) NOT NULL,
     emp_address TEXT NOT NULL,
-    emp_salary INT NOT NULL check(emp_salary >= 10000 AND emp_salary <= 1000000),
+    emp_salary INT NOT NULL,
     branch_id INT NOT NULL,
     CONSTRAINT emp_fk FOREIGN KEY (branch_id)
     REFERENCES branch (branch_id)
