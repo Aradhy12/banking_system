@@ -5,7 +5,9 @@ CREATE TABLE bank(
     bank_address TEXT NOT NULL,
     bank_name VARCHAR(100) NOT NULL
 );
-
+INSERT INTO bank (bank_code, bank_address, bank_name)
+VALUES
+(1, '123 Main St, Anytown, USA', 'Bank of Anytown');
 -- branch table
 CREATE TABLE branch(
     branch_id SERIAL PRIMARY KEY,
@@ -15,6 +17,10 @@ CREATE TABLE branch(
     CONSTRAINT bran_fk FOREIGN KEY (bank_id)
     REFERENCES bank (bank_code)
 );
+INSERT INTO branch (branch_id, branch_name, branch_address, bank_id)
+VALUES
+(1, 'Main Street Branch', '123 Main St, Anytown, USA', 1),
+(2, 'Oak Avenue Branch', '456 Oak Ave, Anytown, USA', 2);
 
 -- employee table
 CREATE TABLE employee(
@@ -26,7 +32,9 @@ CREATE TABLE employee(
     CONSTRAINT emp_fk FOREIGN KEY (branch_id)
     REFERENCES branch (branch_id)
 );
-
+INSERT INTO employee (employee_id, employee_name, emp_address, emp_salary, branch_id)
+VALUES
+(1, 'John Smith', '123 Main St, Anytown, USA', 60000, 1);
 -- account table
 CREATE TABLE account(
     account_no BIGINT PRIMARY KEY,
@@ -36,7 +44,10 @@ CREATE TABLE account(
     CONSTRAINT acc_fk FOREIGN KEY (branch_id)
     REFERENCES branch (branch_id)
 );
-
+INSERT INTO account (account_no, account_type, balance, branch_id)
+VALUES
+(1001, 'savings', 1000.00, 1),
+(1002, 'salary', 5000.00, 2);
 -- loan table
 CREATE TABLE loan(
     loan_id SERIAL PRIMARY KEY,
@@ -50,7 +61,10 @@ CREATE TABLE loan(
     CONSTRAINT branch_fk FOREIGN KEY (branch_id)
     REFERENCES branch (branch_id)
 );
-
+INSERT INTO loan (loan_id, loan_type, amount, interest_rate, account_no, branch_id)
+VALUES
+(1, 'personal', 10000.00, 5.5, 1001, 1),
+(2, 'home', 200000.00, 4.0, 1002, 2);
 -- customer table
 CREATE TABLE customer(
     cust_id SERIAL PRIMARY KEY,
@@ -62,7 +76,10 @@ CREATE TABLE customer(
     CONSTRAINT account_fk FOREIGN KEY (account_no)
     REFERENCES account (account_no)
 );
-
+INSERT INTO customer (cust_id, cust_name, cust_address, cust_phoneno, account_no, employee_id)
+VALUES
+(1, 'Alice Smith', '123 Main St, Anytown, USA', 123456789, 1001, 1),
+(2, 'Bob Johnson', '456 Oak Ave, Anytown, USA', 234567890, 1002, 2);
 --payment table
 CREATE TABLE payment
 (
@@ -74,7 +91,10 @@ CREATE TABLE payment
     CONSTRAINT loan_fk FOREIGN KEY (loan_id)
     REFERENCES loan(loan_id)
 );
-
+INSERT INTO payment (loan_interest, pay_id, pay_amount, date_ofpay, loan_id)
+VALUES
+(500, 1, 1000, '2023-04-01', 1),
+(1000, 2, 2000, '2023-04-15', 2);
 --transaction table
 CREATE TABLE Transaction
 (
@@ -95,7 +115,6 @@ create table login(
    username varchar(100) primary key,
    id int ,
    password varchar(100) not null
-
    
 );
 
