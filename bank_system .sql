@@ -300,5 +300,9 @@ AFTER INSERT ON customer
 FOR EACH ROW
 EXECUTE FUNCTION insert_login_row();
  --login to password when inserted role and this
+ --indexes
+CREATE INDEX ON login USING BTREE(username, password);
+CREATE INDEX ON transactions USING BTREE(sender_id,payment_date);
+CREATE INDEX ON payment USING BTREE(date_ofpay);
 
       
