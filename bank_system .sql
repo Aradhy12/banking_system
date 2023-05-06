@@ -252,7 +252,8 @@ GRANT ALL ON branch, employee, custozmer, account, account, Transaction, payment
 
 CREATE ROLE employee password 'employee';
 GRANT ALL ON customer, account, account, Transaction, payment, loan TO employee;
-
+create role customer password 'customer';
+grant select on cust_name,cust_address,cust_phoneno;
 ---queries
 --finding the name of employee with high salary
 select name,branch_id from employee
