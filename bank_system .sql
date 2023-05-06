@@ -191,7 +191,7 @@ END;
 $show_payment_log$ LANGUAGE plpgsql
 
 --procedure
-CREATE OR REPLACE PROCEDURE withdrawAmount(id int,amt NUMERIC(12,3))
+CREATE OR REPLACE PROCEDURE withdrawAmount(id BIGINT,amt NUMERIC(12,3))
 language plpgsql
 as $$
 declare
